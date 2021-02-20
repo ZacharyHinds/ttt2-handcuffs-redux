@@ -1,9 +1,17 @@
 if SERVER then
   resource.AddFile("materials/vgui/ttt/icon_handcuffs.png")
+  resource.AddFile("materials/vgiu/ttt/icon_handcuffed.png")
 end
 AddCSLuaFile()
 
 if CLIENT then
+  hook.Add("Initialize", "HandcuffsInitStatus", function()
+    STATUS:RegisterStatus("handcuffs_handcuffed_status", {
+      hud = Material("vgui/ttt/icon_handcuffed.png"),
+      type = "bad"
+    })
+  end)
+
   SWEP.PrintName = "Handcuffs"
   SWEP.Slot = 7
 
@@ -59,6 +67,7 @@ function ResetHandcuffs()
     if (ply:GetNWBool("ttt2_handcuffed")) then
       ply:SetNWBool("ttt2_handcuffed", false) -- Set their network bool "handcuffed" to false
       -- Reset bone back to normal if they were handcuffed
+      STATUS:RemoveStatus(ply, "handcuffs_handcuffed_status")
       ply:ManipulateBoneAngles(ply:LookupBone("ValveBiped.Bip01_L_UpperArm"), Angle(0, 0, 0))
       ply:ManipulateBoneAngles(ply:LookupBone("ValveBiped.Bip01_L_Forearm"), Angle(0, 0, 0))
       ply:ManipulateBoneAngles(ply:LookupBone("ValveBiped.Bip01_L_Hand"), Angle(0, 0, 0))
@@ -141,6 +150,7 @@ function SWEP:PrimaryAttack()
       end
     end
     tgt:SetNWBool("ttt2_handcuffed", true)
+    STATUS:AddStatus(tgt, "handcuffs_handcuffed_status")
     owner:PrintMessage(HUD_PRINTTALK, "You handcuffed " .. tgt:GetName())
     tgt:PrintMessage(HUD_PRINTTALK, "You were handcuffed by " .. owner:GetName())
 
@@ -166,6 +176,7 @@ local function HandcuffPly(tgt)
     end
   end
   tgt:SetNWBool("ttt2_handcuffed", true)
+  STATUS:AddStatus(tgt, "handcuffs_handcuffed_status")
   tgt:PrintMessage(HUD_PRINTTALK, "You were handcuffed")
 
   tgt:ManipulateBoneAngles(tgt:LookupBone("ValveBiped.Bip01_L_UpperArm"), Angle(20, 8.8, 0))
@@ -178,6 +189,7 @@ end
 
 local function UnHandcuffPly(tgt)
   tgt:SetNWBool("ttt2_handcuffed", false)
+  STATUS:RemoveStatus(tgt, "handcuffs_handcuffed_status")
   tgt:PrintMessage(HUD_PRINTTALK, "You were unhandcuffed")
 
   tgt:ManipulateBoneAngles(tgt:LookupBone("ValveBiped.Bip01_L_UpperArm"), Angle(0, 0, 0))

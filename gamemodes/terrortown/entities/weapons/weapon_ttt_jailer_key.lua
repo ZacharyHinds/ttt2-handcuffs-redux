@@ -64,6 +64,7 @@ function SWEP:PrimaryAttack()
     if tgt:GetPos():Distance(owner:GetPos()) > 80 or not tgt:GetNWBool("ttt2_handcuffed") then return end
 
     tgt:SetNWBool("ttt2_handcuffed", false)
+    STATUS:RemoveStatus(tgt, "handcuffs_handcuffed_status")
     owner:PrintMessage(HUD_PRINTTALK, "You unhandcuffed " .. tgt:GetName())
     tgt:PrintMessage(HUD_PRINTTALK, "You were unhandcuffed by" .. tgt:GetName())
 
