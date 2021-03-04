@@ -66,7 +66,7 @@ function SWEP:PrimaryAttack()
     tgt:SetNWBool("ttt2_handcuffed", false)
     STATUS:RemoveStatus(tgt, "handcuffs_handcuffed_status")
     owner:PrintMessage(HUD_PRINTTALK, "You unhandcuffed " .. tgt:GetName())
-    tgt:PrintMessage(HUD_PRINTTALK, "You were unhandcuffed by" .. tgt:GetName())
+    tgt:PrintMessage(HUD_PRINTTALK, "You were unhandcuffed by" .. owner:GetName())
 
     tgt:ManipulateBoneAngles(tgt:LookupBone("ValveBiped.Bip01_L_UpperArm"), Angle(0, 0, 0))
     tgt:ManipulateBoneAngles(tgt:LookupBone("ValveBiped.Bip01_L_Forearm"), Angle(0, 0, 0))
