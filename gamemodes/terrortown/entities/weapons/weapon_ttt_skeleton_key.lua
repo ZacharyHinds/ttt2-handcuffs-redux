@@ -81,5 +81,8 @@ function SWEP:PrimaryAttack()
 
     owner:StripWeapon(self:GetClass())
     self:RemoveJailerKey(tgt)
+    if GetConVar("ttt2_handcuff_skeleton_handcuffs"):GetBool() then
+      tgt:Give("weapon_ttt_handcuffs")
+    end
   end
 end

@@ -132,3 +132,4 @@ end
 local handcuffcg = ConvarGroup("Handcuffs", "Handcuffs for TTT2")
 Convar(handcuffcg, false, "ttt2_handcuff_pickup_free", "1", {FCVAR_SERVER_CAN_EXECUTE, FCVAR_NOTIFY, FCVAR_ARCHIVE}, "Should handcuffed players be freed when they pickup jailer key", "bool", 0, 1, 0)
 Convar(handcuffcg, false, "ttt2_handcuff_any_key", "1", {FCVAR_SERVER_CAN_EXECUTE, FCVAR_NOTIFY, FCVAR_ARCHIVE}, "Should a handcuffed player be able to use any jailer key to escape", "bool", 0, 1, 0)
+Convar(handcuffcg, false, "ttt2_handcuff_skeleton_handcuffs", "1", {FCVAR_SERVER_CAN_EXECUTE, FCVAR_NOTIFY, FCVAR_ARCHIVE}, "Should a player who is freed with a skeleton key get their handcuffs?", "bool", 0, 1, 0)
