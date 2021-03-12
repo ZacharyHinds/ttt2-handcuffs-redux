@@ -55,7 +55,7 @@ function SWEP:RemoveJailerKey(ply)
   local jailers = ents.FindByClass("weapon_ttt_jailer_key")
   for i = 1, #jailers do
     local key = jailers[i]
-    if key.handcuffply:SteamID() == ply:SteamID() then key:Remove() end
+    if key.jailed == ply:SteamID() then key:Remove() end
   end
 end
 

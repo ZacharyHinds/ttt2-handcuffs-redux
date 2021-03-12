@@ -198,11 +198,18 @@ end
 if SERVER then
   hook.Add("PlayerCanPickupWeapon", "PreventHandcuffedPickup", function(ply, wep)
     if ply:GetNWBool("ttt2_handcuffed") then
-      if GetConVar("ttt2_handcuff_pickup_free"):GetBool() and wep:GetClass() == "weapon_ttt_jailer_key" and (wep.jailed == ply:SteamID() or GetConVar("ttt2_handcuff_any_key"):GetBool()) then
+      local wep_class = wep:GetClass()
+      if GetConVar("ttt2_handcuff_pickup_free"):GetBool() and (wep_class == "weapon_ttt_jailer_key" or wep_class == "weapon_ttt_skeleton_key") and (wep.jailed == ply:SteamID() or GetConVar("ttt2_handcuff_any_key"):GetBool() or wep_class == "weapon_ttt_skeleton_key") then
         UnHandcuffPly(ply)
         wep:Remove()
-        ply:Give("weapon_ttt_handcuffs")
-        ply:SelectWeapon("weapon_ttt_handcuffs")
+        if wep_class == "weapon_ttt_jailer_key" then
+          ply:Give("weapon_ttt_handcuffs")
+          ply:SelectWeapon("weapon_ttt_handcuffs")
+        else
+          ply:Give("weapon_ttt_skeleton_key")
+          ply:SelectWeapon("weapon_ttt_skeleton_key")
+          ply:GetWeapon("weapon_ttt_skeleton_key"):RemoveJailerKey(ply)
+        end
       end
       return false
     end
