@@ -79,11 +79,6 @@ function ResetHandcuffs()
 end
 
 if SERVER then
-  hook.Add("PlayerCanPickupWeapon", "PreventHandcuffedPickup", function(ply, wep)
-    if ply:GetNWBool("ttt2_handcuffed") then
-      return false
-    end
-  end)
 
   -- hook.Add("TTTEquipmentTabs", "PreventHandcuffedTabs", function(dtabs)
   --   if ply:GetNWBool("ttt2_handcuffed") then
@@ -201,8 +196,19 @@ local function UnHandcuffPly(tgt)
 end
 
 if SERVER then
-  util.AddNetworkString("force_handcuff_tgt")
+  hook.Add("PlayerCanPickupWeapon", "PreventHandcuffedPickup", function(ply, wep)
+    if ply:GetNWBool("ttt2_handcuffed") then
+      if GetConVar("ttt2_handcuff_pickup_free"):GetBool() and wep:GetClass() == "weapon_ttt_jailer_key" and (wep.jailed == ply:SteamID() or GetConVar("ttt2_handcuff_any_key"):GetBool()) then
+        UnHandcuffPly(ply)
+        wep:Remove()
+        ply:Give("weapon_ttt_handcuffs")
+        ply:SelectWeapon("weapon_ttt_handcuffs")
+      end
+      return false
+    end
+  end)
 
+  util.AddNetworkString("force_handcuff_tgt")
   net.Receive("force_handcuff_tgt", function()
     local tgt = net.ReadEntity()
     if net.ReadBool() then
